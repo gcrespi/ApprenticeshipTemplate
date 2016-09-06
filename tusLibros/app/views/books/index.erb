@@ -1,0 +1,19 @@
+<% provide(:sub_title, 'Catalog') %>
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% books.each do |book| %>
+        <tr>
+          <td><%= book.isbn %></td>
+          <td><%= book.price %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
