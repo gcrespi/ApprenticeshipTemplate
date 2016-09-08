@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe CartsController, type: :controller do
-  let(:a_book) { Book.create!(:isbn => '9788427811362', :price => 20) }
-  let(:a_cart) { Cart.create! }
+  let(:a_book) { create(:a_book) }
+  let(:a_cart) { create(:cart) }
 
   context 'When requesting to add 2 books to a cart' do
     before do

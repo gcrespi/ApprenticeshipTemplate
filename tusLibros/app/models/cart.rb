@@ -1,5 +1,8 @@
 class Cart < ActiveRecord::Base
+  belongs_to :user
   has_and_belongs_to_many :books
+
+  validates :user, presence: true
 
   def self.error_message_for_non_positive_amount_of_books
     'Cannot add an amount of books less or equals than 0'
@@ -28,6 +31,10 @@ class Cart < ActiveRecord::Base
 
   def list_cart
     books.group_by{ | a_book | a_book }.map{ | a_book, book_list | [a_book, book_list.size] }.to_h
+  end
+
+  def content
+    books
   end
 
   def total_amount

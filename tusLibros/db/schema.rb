@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908123656) do
+ActiveRecord::Schema.define(version: 20160908181002) do
 
   create_table "books", force: :cascade do |t|
     t.string   "isbn"
@@ -28,9 +28,18 @@ ActiveRecord::Schema.define(version: 20160908123656) do
   add_index "books_carts", ["book_id"], name: "index_books_carts_on_book_id"
   add_index "books_carts", ["cart_id"], name: "index_books_carts_on_cart_id"
 
+  create_table "books_sales", force: :cascade do |t|
+    t.integer "book_id"
+    t.integer "sale_id"
+  end
+
+  add_index "books_sales", ["book_id"], name: "index_books_sales_on_book_id"
+  add_index "books_sales", ["sale_id"], name: "index_books_sales_on_sale_id"
+
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
 
   create_table "credit_cards", force: :cascade do |t|
@@ -39,6 +48,23 @@ ActiveRecord::Schema.define(version: 20160908123656) do
     t.date     "expiration_date"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "sales", force: :cascade do |t|
+    t.integer  "credit_card_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "total_price"
+    t.integer  "user_id"
+  end
+
+  add_index "sales", ["credit_card_id"], name: "index_sales_on_credit_card_id"
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "password"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
