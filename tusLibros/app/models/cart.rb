@@ -29,4 +29,8 @@ class Cart < ActiveRecord::Base
   def list_cart
     books.group_by{ | a_book | a_book }.map{ | a_book, book_list | [a_book, book_list.size] }.to_h
   end
+
+  def total_amount
+    books.map{ | book | book.price }.reduce(0, :+)
+  end
 end

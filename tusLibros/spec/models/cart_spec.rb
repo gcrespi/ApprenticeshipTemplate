@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Cart, type: :model do
-  let(:a_book) { Book.create(:isbn => '9788427811362', :price => 20) }
-  let(:another_book) { Book.create(:isbn => '9788427815125', :price => 25) }
+  let(:a_book) { create(:a_book) }
+  let(:another_book) { create(:another_book) }
+
   context 'When having a new cart' do
     let(:a_cart) { Cart.create() }
     it 'should be empty' do

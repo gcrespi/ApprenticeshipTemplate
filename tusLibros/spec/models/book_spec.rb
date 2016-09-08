@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Book, type: :model do
   context 'When creating a book' do
-    let(:a_book) { Book.create(:isbn => '9788427811362', :price => 20) }
+    let(:a_book) { create(:a_book) }
 
     it 'should have an isbn and a price' do
       expect(a_book).to respond_to :isbn
