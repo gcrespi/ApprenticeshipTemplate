@@ -28,7 +28,7 @@ describe MerchantProcessor do
         it 'should raise an error telling so' do
           stub_request(:post, Rails.configuration.merchant_processor_url).
               with(body: params).
-              to_return(status: 400, body: '0|OK')
+              to_return(status: 400, body: '')
           expect{ a_merchant_processor.charge(a_credit_card, a_price) }.to raise_error MerchantProcessor.error_message_for_bad_request
         end
       end

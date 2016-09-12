@@ -13,4 +13,20 @@ class CartsController < ApplicationController
     end
     render nothing: true
   end
+
+  def checkout
+    cart = Cart.find(params[:cartId])
+    raise 'no tocarás el carrito de tu prójimo' unless cart_belongs_to_current_user(cart)
+    credit_card = CreditCard.create(
+        owner: params[:cco],
+        number: params[:ccn],
+        expiration_date: Date.parse(params[:cced])
+    )
+    Cashier.new(MerchantProcessor.new).checkout(cart, credit_card)
+    render nothing: true
+  end
+
+  def cart_belongs_to_current_user(cart)
+    !cart.nil? && cart.user_id == session[:user_id]
+  end
 end

@@ -54,6 +54,10 @@ describe Cashier do
         expect(sale.list_items).to eq({ a_book => 1, another_book => 2 })
         expect(sale.total_price).to eq total_price_of_books
       end
+
+      it 'the cart should be no more' do
+        expect(Cart.find_by(id: cart.id)).to be_nil
+      end
     end
   end
 end

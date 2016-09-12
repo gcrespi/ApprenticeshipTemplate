@@ -28,13 +28,15 @@ Rails.application.routes.draw do
   #   end
 
   post 'carts', to: 'carts#create'
-  post 'carts/:cart_id/add_book', to:'carts#add_books', as: 'add_book'
+  post 'carts/:cart_id/add_book', to:'carts#add_books'
 
   get 'books' => 'books#index'
   get 'books/:id' => 'books#show'
 
   get 'login' => 'users#login'
   post 'login' => 'users#request_login'
+
+  post 'carts/:cartId/checkout', to: 'carts#checkout'
 
   # Example resource route with sub-resources:
   #   resources :products do

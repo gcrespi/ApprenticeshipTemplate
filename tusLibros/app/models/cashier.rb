@@ -11,6 +11,7 @@ class Cashier
     assert_cart_not_empty(a_cart)
     @merchant_processor.charge(a_credit_card, a_cart.total_amount)
     register_sale(a_cart, a_credit_card)
+    a_cart.destroy
   end
 
   def register_sale(a_cart, a_credit_card)
