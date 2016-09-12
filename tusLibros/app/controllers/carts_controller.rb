@@ -7,7 +7,7 @@ class CartsController < ApplicationController
 
   def create
     if session[:user_id]
-      cart = Cart.create(user_id: session[:user_id])
+      Cart.create(user_id: session[:user_id])
     else
       raise 'No hay usuario logueado!'
     end
@@ -15,18 +15,25 @@ class CartsController < ApplicationController
   end
 
   def checkout
-    cart = Cart.find(params[:cartId])
-    raise 'no tocarás el carrito de tu prójimo' unless cart_belongs_to_current_user(cart)
-    credit_card = CreditCard.create(
-        owner: params[:cco],
-        number: params[:ccn],
-        expiration_date: Date.parse(params[:cced])
-    )
-    Cashier.new(MerchantProcessor.new).checkout(cart, credit_card)
-    render nothing: true
+    cart = Cart.find_by(id: params[:cartId])
+    if cart_belongs_to_current_user(cart)
+      credit_card = create_cart_from_params(params)
+      Cashier.new(MerchantProcessor.new).checkout(cart, credit_card)
+      render json: { code: 0 }
+    else
+      render json: { code: 1, error_description: self.class.error_message_for_inaccessible_cart }
+    end
+  end
+
+  def create_cart_from_params(params)
+    CreditCard.create(owner: params[:cco], number: params[:ccn], expiration_date: Date.parse(params[:cced]))
   end
 
   def cart_belongs_to_current_user(cart)
     !cart.nil? && cart.user_id == session[:user_id]
+  end
+
+  def self.error_message_for_inaccessible_cart
+    'You do not have access to this cart'
   end
 end

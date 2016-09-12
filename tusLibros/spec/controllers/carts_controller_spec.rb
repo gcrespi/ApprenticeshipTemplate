@@ -34,21 +34,20 @@ RSpec.describe CartsController, type: :controller do
       let(:a_cart) { create(:cart) }
       let(:a_price) { 30 }
       let(:a_book) { create(:a_book, price: a_price) }
+      let(:a_credit_card) { build(:credit_card) }
+      let(:params) { {
+          'creditCardNumber' => a_credit_card.number,
+          'creditCardExpiration' => a_credit_card.expiration,
+          'creditCardOwner' => a_credit_card.owner,
+          'transactionAmount' => a_price.to_s
+        }
+      }
 
       before do
         a_cart.add(a_book, 1)
       end
 
       context 'a user is logged and is the owner of the cart' do
-        let(:a_credit_card) { build(:credit_card) }
-        let(:params) { {
-            'creditCardNumber' => a_credit_card.number,
-            'creditCardExpiration' => a_credit_card.expiration,
-            'creditCardOwner' => a_credit_card.owner,
-            'transactionAmount' => a_price.to_s
-          }
-        }
-
         before do
           session[:user_id] = a_cart.user.id
           stub_request(:post, Rails.configuration.merchant_processor_url)
@@ -64,6 +63,24 @@ RSpec.describe CartsController, type: :controller do
 
         it 'the cart should be no more' do
           expect(Cart.find_by(id: a_cart.id)).to be_nil
+        end
+      end
+
+      context 'and the user logged is not the owner of the cart' do
+        before do
+          session[:user_id] = a_cart.user.id + 1
+          post :checkout, {
+              cartId: a_cart.id,
+              ccn: a_credit_card.number,
+              cco: a_credit_card.owner,
+              cced: a_credit_card.expiration_date
+          }
+        end
+
+        it 'should responds that the cart is not accessible' do
+          json_response = JSON.parse(response.body)
+          expect(json_response['code']).to eq(1)
+          expect(json_response['error_description']).to eq(CartsController.error_message_for_inaccessible_cart)
         end
       end
     end
