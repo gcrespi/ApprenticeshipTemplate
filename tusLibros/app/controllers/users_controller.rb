@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   def request_login
     user = User.find_by_name(params[:username])
     if user && user.password == params[:password]
+      session[:user_id] = user.id
       render template: 'users/successful_login'
     else
       flash[:error] = 'Failed Login!'

@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   #     end
   #   end
 
+  post 'carts', to: 'carts#create'
   post 'carts/:cart_id/add_book', to:'carts#add_books', as: 'add_book'
 
   get 'books' => 'books#index'
