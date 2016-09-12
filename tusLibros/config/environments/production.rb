@@ -76,4 +76,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Configures the url for the service of Merchant Processor for Development
+  config.merchant_processor_url = 'https://merchant.com/debit'
 end

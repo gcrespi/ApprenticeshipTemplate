@@ -19,4 +19,9 @@ class CreditCard < ActiveRecord::Base
   def expiration_date_cannot_be_in_the_past
     errors.add(:expiration_date, CreditCard.error_message_for_expired_credit_card) if expiration_date <= Date.today
   end
+
+  def expiration
+    "#{expiration_date.month}#{expiration_date.year}"
+  end
+
 end
