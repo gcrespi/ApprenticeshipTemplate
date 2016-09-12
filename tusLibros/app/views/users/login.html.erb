@@ -1,0 +1,13 @@
+<h1> Esto es una pantalla de login </h1>
+
+<% if flash[:error] %>
+    <div class="alert alert-error"><%= flash[:error] %></div>
+<% end %>
+
+<%= form_tag('login', method: 'post') do %>
+  <%= label_tag(:username, 'Nombre de Usuario:') %>
+  <%= text_field_tag(:username) %>
+  <%= label_tag(:password, 'Contraseña:') %>
+  <%= text_field_tag(:password) %>
+  <%= submit_tag('Login') %>
+<% end %>

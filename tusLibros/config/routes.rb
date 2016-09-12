@@ -32,6 +32,9 @@ Rails.application.routes.draw do
   get 'books' => 'books#index'
   get 'books/:id' => 'books#show'
 
+  get 'login' => 'users#login'
+  post 'login' => 'users#request_login'
+
   # Example resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales
