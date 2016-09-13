@@ -1,16 +1,12 @@
 class UsersController < ApplicationController
-  def login
-    render template: 'users/login'
-  end
 
   def request_login
     user = User.find_by_name(params[:username])
     if user && user.password == params[:password]
       session[:user_id] = user.id
-      render template: 'users/successful_login'
+      render nothing: true, status: :ok
     else
-      flash[:error] = 'Failed Login!'
-      redirect_to :login
+      render json: { error: 'Failed authentication' }, status: 400
     end
   end
 end

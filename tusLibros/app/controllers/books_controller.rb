@@ -1,9 +1,13 @@
 class BooksController < ApplicationController
   def index
-    render template: 'books/index', locals: { :books => Book.all }
+    render json: Book.all
   end
 
   def show
-    render template: 'books/show', locals: { :book => Book.find(params[:id]) }
+    begin
+      render json: Book.find(params[:id])
+    rescue ActiveRecord::RecordNotFound => error
+      render json: { error: error.message }, status: :not_found
+    end
   end
 end

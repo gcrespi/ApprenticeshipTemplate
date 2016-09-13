@@ -19,7 +19,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'should have a success response' do
-        expect(response).to render_template('successful_login')
+        expect(response).to have_http_status(:ok)
       end
     end
   end

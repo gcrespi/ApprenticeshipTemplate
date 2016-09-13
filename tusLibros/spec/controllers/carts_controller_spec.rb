@@ -79,8 +79,8 @@ RSpec.describe CartsController, type: :controller do
 
         it 'should responds that the cart is not accessible' do
           json_response = JSON.parse(response.body)
-          expect(json_response['code']).to eq(1)
-          expect(json_response['error_description']).to eq(CartsController.error_message_for_inaccessible_cart)
+          expect(response).to have_http_status(:unauthorized)
+          expect(json_response['error']).to eq(CartsController.error_message_for_inaccessible_cart)
         end
       end
     end
