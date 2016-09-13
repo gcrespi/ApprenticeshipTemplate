@@ -85,4 +85,22 @@ RSpec.describe CartsController, type: :controller do
       end
     end
   end
+
+  context 'When requesting to list a cart with books' do
+    let(:a_cart) { create(:cart) }
+    let(:a_book) { create(:a_book) }
+    let(:another_book) { create(:another_book) }
+
+    before do
+      a_cart.add(a_book, 3)
+      a_cart.add(another_book, 2)
+      get :list, { cart_id: a_cart.id }
+    end
+
+    it 'the response should indicate the quantity of each book' do
+      expect(JSON.parse(response.body)).to eq a_cart.list_cart.as_json
+    end
+
+  end
+
 end

@@ -27,8 +27,10 @@ Rails.application.routes.draw do
   #     end
   #   end
 
+  get 'carts/:cart_id/list' => 'carts#list'
   post 'carts', to: 'carts#create'
   post 'carts/:cart_id/add_book', to:'carts#add_books'
+  post 'carts/:cartId/checkout', to: 'carts#checkout'
 
   get 'books' => 'books#index'
   get 'books/:id' => 'books#show'
@@ -36,7 +38,6 @@ Rails.application.routes.draw do
   get 'login' => 'users#login'
   post 'login' => 'users#request_login'
 
-  post 'carts/:cartId/checkout', to: 'carts#checkout'
 
   # Example resource route with sub-resources:
   #   resources :products do

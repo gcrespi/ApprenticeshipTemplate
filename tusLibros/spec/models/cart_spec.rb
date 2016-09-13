@@ -58,7 +58,7 @@ RSpec.describe Cart, type: :model do
       end
 
       it 'should return a hash with its ISBN and the quantity' do
-        expect(a_cart.list_cart).to eq({a_book => 4, another_book => 2 })
+        expect(a_cart.list_cart).to eq({a_book.isbn => 4, another_book.isbn => 2 })
       end
     end
   end

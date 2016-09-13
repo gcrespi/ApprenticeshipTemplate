@@ -1,4 +1,9 @@
 class CartsController < ApplicationController
+  def list
+    cart = Cart.find(params[:cart_id])
+    render json: cart.list_cart, status: :ok
+  end
+
   def add_books
     cart = Cart.find(params[:cart_id])
     cart.add(Book.find_by(:isbn => params[:isbn]), params[:quantity].to_i)
@@ -7,8 +12,12 @@ class CartsController < ApplicationController
 
   def create
     if session[:user_id]
-      cart = Cart.create(user_id: session[:user_id])
-      render json: {cart_id: cart.id}, status: :created
+      cart = Cart.new(user_id: session[:user_id])
+      if cart.save
+        render json: {cart_id: cart.id}, status: :created
+      else
+        render json: cart.errors, status: :bad_request
+      end
     else
       render json: {error: self.class.error_message_for_should_first_login}, status: :unauthorized
     end

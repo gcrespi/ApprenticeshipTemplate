@@ -12,16 +12,25 @@ RSpec.describe BooksController, type: :controller do
   end
 
   context 'When having a book created' do
-    before do
-      Book.create(:isbn => '9788427811362', :price => 20)
-    end
-    context 'and request the book with the id 1' do
+    let(:a_book) { Book.create(:isbn => '9788427811362', :price => 20) }
+
+    context 'and request to show the book' do
       before do
-        get :show, { :id => 1 }
+        get :show, { :id => a_book.id }
       end
 
       it 'should have a success response' do
         assert_response :success
+      end
+    end
+
+    context 'and request to show the a non existent book' do
+      before do
+        get :show, { :id => a_book.id + 1 }
+      end
+
+      it 'should have a success response' do
+        assert_response :not_found
       end
     end
   end
