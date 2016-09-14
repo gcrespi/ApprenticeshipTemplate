@@ -1,4 +1,6 @@
 class CartsController < ApplicationController
+  before_action :assert_active_cart, only: [:list, :add_books, :checkout]
+
   def list
     cart = Cart.find(params[:cart_id])
     render json: cart.list_cart, status: :ok
@@ -24,23 +26,29 @@ class CartsController < ApplicationController
   end
 
   def checkout
-    cart = Cart.find_by(id: params[:cartId])
+    cart = Cart.find_by(id: params[:cart_id])
     if cart_belongs_to_current_user(cart)
-      credit_card = create_card_from_params(params)
-      Cashier.new(MerchantProcessor.new).checkout(cart, credit_card)
+      Cashier.new(MerchantProcessor.new).checkout(cart, create_card_from_params(params))
       render nothing: true, status: :ok
     else
       render json: {error: self.class.error_message_for_inaccessible_cart}, status: :unauthorized
     end
   end
 
-  def create_card_from_params(params)
-    CreditCard.create(owner: params[:cco], number: params[:ccn], expiration_date: Date.parse(params[:cced]))
-  end
+  private
+    def assert_active_cart
+      unless Cart.find(params[:cart_id]).active?
+        render json: { error: self.class.error_message_for_expired_cart}, status: :unprocessable_entity
+      end
+    end
 
-  def cart_belongs_to_current_user(cart)
-    !cart.nil? && cart.user_id == session[:user_id]
-  end
+    def create_card_from_params(params)
+      CreditCard.create(owner: params[:cco], number: params[:ccn], expiration_date: Date.parse(params[:cced]))
+    end
+
+    def cart_belongs_to_current_user(cart)
+      !cart.nil? && cart.user_id == session[:user_id]
+    end
 
   def self.error_message_for_should_first_login
     'You have to be logged in first'
@@ -48,5 +56,9 @@ class CartsController < ApplicationController
 
   def self.error_message_for_inaccessible_cart
     'You do not have access to this cart'
+  end
+
+  def self.error_message_for_expired_cart
+    'The cart has already expired'
   end
 end
