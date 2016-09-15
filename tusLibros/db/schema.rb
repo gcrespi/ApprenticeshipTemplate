@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160913185646) do
+ActiveRecord::Schema.define(version: 20160915194359) do
 
   create_table "books", force: :cascade do |t|
     t.string   "isbn"
@@ -35,6 +35,14 @@ ActiveRecord::Schema.define(version: 20160913185646) do
 
   add_index "books_sales", ["book_id"], name: "index_books_sales_on_book_id"
   add_index "books_sales", ["sale_id"], name: "index_books_sales_on_sale_id"
+
+  create_table "cart_sessions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "cart_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.datetime "last_operated_at"
+  end
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at",       null: false

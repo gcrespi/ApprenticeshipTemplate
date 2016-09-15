@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CartsController, type: :controller do
-  let(:a_cart) { create(:cart) }
+  let(:a_cart) { CartSession.create_with_cart!(user: create(:user)) }
 
   context 'When having an active cart create by current user' do
     before do
@@ -20,6 +20,17 @@ RSpec.describe CartsController, type: :controller do
     end
 
     context 'When requesting to checkout a cart' do
+
+      let(:checkout_params) { {
+          cart_id: a_cart.id,
+          credit_card: {
+              number: a_credit_card.number,
+              owner: a_credit_card.owner,
+              expiration_date: a_credit_card.expiration_date
+          }
+        }
+      }
+
       context 'and the cart is not empty' do
         let(:a_price) { 30 }
         let(:a_book) { create(:a_book, price: a_price) }
@@ -42,12 +53,7 @@ RSpec.describe CartsController, type: :controller do
             stub_request(:post, Rails.configuration.merchant_processor_url)
                 .with(:body => params)
                 .to_return(:status => 200, :body => '0|OK', :headers => {})
-            post :checkout, {
-                cart_id: a_cart.id,
-                ccn: a_credit_card.number,
-                cco: a_credit_card.owner,
-                cced: a_credit_card.expiration_date
-            }
+            post :checkout, checkout_params
           end
 
           it 'the cart should be no more' do
@@ -58,18 +64,13 @@ RSpec.describe CartsController, type: :controller do
         context 'and the user logged is not the owner of the cart' do
           before do
             session[:user_id] = a_cart.user.id + 1
-            post :checkout, {
-                cart_id: a_cart.id,
-                ccn: a_credit_card.number,
-                cco: a_credit_card.owner,
-                cced: a_credit_card.expiration_date
-            }
+            post :checkout, checkout_params
           end
 
           it 'should responds that the cart is not accessible' do
             json_response = JSON.parse(response.body)
-            expect(response).to have_http_status(:unauthorized)
-            expect(json_response['error']).to eq(CartsController.error_message_for_inaccessible_cart)
+            expect(response).to have_http_status(:forbidden)
+            expect(json_response['error']).to eq(CartSession.error_message_for_inaccessible_cart)
           end
         end
       end
@@ -106,19 +107,19 @@ RSpec.describe CartsController, type: :controller do
       end
 
       context 'and 30 minutes in the future...' do
-        let!(:a_cart) { create(:cart, user: a_user) }
+        let!(:a_cart_session) { create(:cart_session, user: a_user) }
         before do
           Timecop.travel(30.minutes.from_now)
         end
 
         context 'and requesting to list the cart' do
           before do
-            get :list, { cart_id: a_cart.id }
+            get :list, { cart_id: a_cart_session.id }
           end
 
           it 'should respond an unprocessable entity status' do
             expect(response).to have_http_status(:unprocessable_entity)
-            expect(response.body).to be_include CartsController.error_message_for_expired_cart
+            expect(response.body).to be_include CartSession.error_message_for_expired_cart
           end
         end
       end

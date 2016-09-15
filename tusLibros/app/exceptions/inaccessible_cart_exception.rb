@@ -1,0 +1,2 @@
+class InaccessibleCartException < Exception
+end

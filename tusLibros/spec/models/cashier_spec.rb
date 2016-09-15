@@ -4,7 +4,7 @@ describe Cashier do
   let(:merchant_processor_stub) { instance_spy(MerchantProcessor) }
   let(:cashier) { Cashier.new(merchant_processor_stub) }
   let(:a_user) {create(:user)}
-  let(:cart) { Cart.create!(user: a_user) }
+  let(:cart) { create(:cart_session, user: a_user) }
   let(:a_credit_card) { create(:credit_card) }
   let(:a_book) { create(:a_book) }
   let(:another_book) { create(:another_book) }
