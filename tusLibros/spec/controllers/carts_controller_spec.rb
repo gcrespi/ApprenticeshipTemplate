@@ -3,8 +3,10 @@ require 'rails_helper'
 RSpec.describe CartsController, type: :controller do
   let(:a_cart) { create(:cart) }
 
-  context 'When having an active cart' do
-
+  context 'When having an active cart create by current user' do
+    before do
+      session[:user_id] = a_cart.user_id
+    end
     context 'When requesting to add 2 books to a cart' do
       let(:a_book) { create(:a_book) }
 
@@ -102,22 +104,22 @@ RSpec.describe CartsController, type: :controller do
         a_user.reload
         expect(a_user.carts.size).to eq(previous_amount_of_carts + 1)
       end
-    end
 
-    context 'and 30 minutes in the future...' do
-      let!(:a_cart) { create(:cart) }
-      before do
-        Timecop.travel(30.minutes.from_now)
-      end
-
-      context 'and requesting to list the cart' do
+      context 'and 30 minutes in the future...' do
+        let!(:a_cart) { create(:cart, user: a_user) }
         before do
-          get :list, { cart_id: a_cart.id }
+          Timecop.travel(30.minutes.from_now)
         end
 
-        it 'should respond an unprocessable entity status' do
-          expect(response).to have_http_status(:unprocessable_entity)
-          expect(response.body).to be_include CartsController.error_message_for_expired_cart
+        context 'and requesting to list the cart' do
+          before do
+            get :list, { cart_id: a_cart.id }
+          end
+
+          it 'should respond an unprocessable entity status' do
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(response.body).to be_include CartsController.error_message_for_expired_cart
+          end
         end
       end
     end
