@@ -5,6 +5,6 @@ class BooksController < ApplicationController
   end
 
   def show
-      render json: Book.find(params[:id])
+      render json: Book.find(params.require(:id))
   end
 end

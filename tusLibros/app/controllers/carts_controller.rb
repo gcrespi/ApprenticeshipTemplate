@@ -4,14 +4,14 @@ class CartsController < ApplicationController
   before_action :assert_authenticated
 
   def list
-    cart = CartSession.find_with_owner(params[:cart_id], session[:user_id])
+    cart = CartSession.find_with_owner(params.require(:cart_id), session[:user_id])
     render json: cart.list_cart, status: :ok
   end
 
   def add_books
-    cart = CartSession.find_with_owner(params[:cart_id], session[:user_id])
-    book = Book.find_by!(:isbn => params[:isbn])
-    cart.add(book, params[:quantity].to_i)
+    cart = CartSession.find_with_owner(params.require(:cart_id), session[:user_id])
+    book = Book.find_by!(:isbn => params.require(:isbn))
+    cart.add(book, params.require(:quantity).to_i)
     render nothing: true, status: :ok
   end
 
@@ -21,7 +21,7 @@ class CartsController < ApplicationController
   end
 
   def checkout
-    cart = CartSession.find_with_owner(params[:cart_id], session[:user_id])
+    cart = CartSession.find_with_owner(params.require(:cart_id), session[:user_id])
     Cashier.new(MerchantProcessor.new).checkout(cart, CreditCard.create!(credit_card_params))
     render nothing: true, status: :ok
   end

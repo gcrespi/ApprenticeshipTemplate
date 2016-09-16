@@ -1,10 +1,8 @@
 class SalesController < ApplicationController
+  include WithUserAuthentication
+  before_action :assert_authenticated
 
   def list_purchases
-    if session[:user_id]
-      render json: Sale.where(user_id: session[:user_id])
-    else
-      render nothing: true, status: :unauthorized
-    end
+    render json: Sale.where(user_id: session[:user_id])
   end
 end
