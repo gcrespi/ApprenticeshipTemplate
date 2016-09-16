@@ -10,7 +10,7 @@ module WithErrorHandler
       render_error(error.message, :not_found)
     rescue InaccessibleCartException => error
       render_error(error.message, :forbidden)
-    rescue UnauthorizedException, LoginRequiredException => error
+    rescue FailedLoginException, LoginRequiredException => error
       render_error(error.message, :unauthorized)
     rescue ExpiredCartException => error
       render_error(error.message, :unprocessable_entity)
