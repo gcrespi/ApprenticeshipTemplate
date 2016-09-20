@@ -3,10 +3,7 @@ require 'rails_helper'
 RSpec.describe CartsController, type: :controller do
   let(:a_cart) { CartSession.create_with_cart!(user: create(:user)) }
 
-  context 'When having an active cart create by current user' do
-    before do
-      session[:user_id] = a_cart.user_id
-    end
+  context 'When having an active cart' do
     context 'When requesting to add 2 books to a cart' do
       let(:a_book) { create(:a_book) }
 
@@ -20,7 +17,6 @@ RSpec.describe CartsController, type: :controller do
     end
 
     context 'When requesting to checkout a cart' do
-
       let(:checkout_params) { {
           cart_id: a_cart.id,
           credit_card: {
@@ -45,33 +41,14 @@ RSpec.describe CartsController, type: :controller do
 
         before do
           a_cart.add(a_book, 1)
+          stub_request(:post, Rails.configuration.merchant_processor_url)
+              .with(:body => params)
+              .to_return(:status => 200, :body => '0|OK', :headers => {})
+          post :checkout, checkout_params
         end
 
-        context 'a user is logged and is the owner of the cart' do
-          before do
-            session[:user_id] = a_cart.user.id
-            stub_request(:post, Rails.configuration.merchant_processor_url)
-                .with(:body => params)
-                .to_return(:status => 200, :body => '0|OK', :headers => {})
-            post :checkout, checkout_params
-          end
-
-          it 'the cart should be no more' do
-            expect(Cart.find_by(id: a_cart.id)).to be_nil
-          end
-        end
-
-        context 'and the user logged is not the owner of the cart' do
-          before do
-            session[:user_id] = a_cart.user.id + 1
-            post :checkout, checkout_params
-          end
-
-          it 'should responds that the cart is not accessible' do
-            json_response = JSON.parse(response.body)
-            expect(response).to have_http_status(:forbidden)
-            expect(json_response['error']).to eq(CartSession.error_message_for_inaccessible_cart)
-          end
+        it 'the cart should be no more' do
+          expect(Cart.find_by(id: a_cart.id)).to be_nil
         end
       end
     end
@@ -93,15 +70,22 @@ RSpec.describe CartsController, type: :controller do
   end
 
   context 'When requesting to create a cart' do
-    context 'and a user is logged' do
+    context 'with valid user credentials' do
       let(:a_user) { create(:user) }
-      before do
-        session[:user_id] = a_user.id
+      let(:user_credentials) { {
+          username: a_user.name,
+          password: a_user.password
+        }
+      }
+
+      it 'should success' do
+        post :create, user_credentials
+        expect(response).to have_http_status :created
       end
 
       it 'the user should have one more cart' do
         previous_amount_of_carts = a_user.carts.size
-        post :create
+        post :create, user_credentials
         a_user.reload
         expect(a_user.carts.size).to eq(previous_amount_of_carts + 1)
       end
@@ -122,17 +106,6 @@ RSpec.describe CartsController, type: :controller do
             expect(response.body).to be_include CartSession.error_message_for_expired_cart
           end
         end
-      end
-    end
-
-    context 'and nobody is logged' do
-      before do
-        session[:user_id] = nil
-        post :create
-      end
-
-      it 'the user should have one more cart' do
-        expect(response).to have_http_status :unauthorized
       end
     end
   end

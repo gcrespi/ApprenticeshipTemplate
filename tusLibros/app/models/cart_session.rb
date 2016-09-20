@@ -11,12 +11,6 @@ class CartSession < ActiveRecord::Base
     'You do not have access to the cart'
   end
 
-  def self.find_with_owner(cart_session_id,owner_id)
-    cart_session = CartSession.find(cart_session_id)
-    raise(InaccessibleCartException, error_message_for_inaccessible_cart) unless cart_session.user_id == owner_id
-    cart_session
-  end
-
   def self.create_with_cart!(attrs)
     cart = Cart.create!
     CartSession.create!(attrs.merge(cart: cart))
