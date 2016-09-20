@@ -124,5 +124,16 @@ RSpec.describe CartsController, type: :controller do
         end
       end
     end
+
+    context 'and nobody is logged' do
+      before do
+        session[:user_id] = nil
+        post :create
+      end
+
+      it 'the user should have one more cart' do
+        expect(response).to have_http_status :unauthorized
+      end
+    end
   end
 end

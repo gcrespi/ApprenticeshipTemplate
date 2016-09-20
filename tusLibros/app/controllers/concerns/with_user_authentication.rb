@@ -1,9 +1,7 @@
 module WithUserAuthentication
-  def self.error_message_for_should_first_login
-    'You have to be logged in first'
-  end
+  ERROR_MESSAGE_FOR_SHOULD_FIRST_LOGIN = 'You have to be logged in first'
 
   def assert_authenticated
-    raise LoginRequiredException, self.class.error_message_for_should_first_login if session[:user_id].nil?
+    raise LoginRequiredException, ERROR_MESSAGE_FOR_SHOULD_FIRST_LOGIN if session[:user_id].nil?
   end
 end
