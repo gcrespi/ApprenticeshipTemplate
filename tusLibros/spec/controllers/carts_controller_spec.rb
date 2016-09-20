@@ -70,6 +70,36 @@ RSpec.describe CartsController, type: :controller do
   end
 
   context 'When requesting to create a cart' do
+    context 'with a valid user' do
+      let(:a_user) { create(:user) }
+      context 'but the password does not match' do
+        let(:user_credentials) { {
+            username: a_user.name,
+            password: a_user.password + 'a'
+        }
+        }
+
+        it 'should success' do
+          post :create, user_credentials
+          expect(response).to have_http_status :unauthorized
+          expect(response.body).to be_include(WithUserCredentials::ERROR_MESSAGE_FOR_INVALID_CREDENTIALS)
+        end
+      end
+    end
+    context 'with a non existing user' do
+      let(:user_credentials) { {
+          username: 'not a username',
+          password: '123'
+        }
+      }
+
+      it 'should success' do
+        post :create, user_credentials
+        expect(response).to have_http_status :unauthorized
+        expect(response.body).to be_include(WithUserCredentials::ERROR_MESSAGE_FOR_INVALID_CREDENTIALS)
+      end
+    end
+
     context 'with valid user credentials' do
       let(:a_user) { create(:user) }
       let(:user_credentials) { {

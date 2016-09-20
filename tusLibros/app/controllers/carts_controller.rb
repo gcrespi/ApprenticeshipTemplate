@@ -1,4 +1,6 @@
 class CartsController < ApplicationController
+  include WithUserCredentials
+
   def list
     cart = CartSession.find(params.require(:cart_id))
     render json: cart.list_cart, status: :ok
@@ -26,15 +28,5 @@ class CartsController < ApplicationController
   private
     def credit_card_params
       params.require(:credit_card).permit(:owner, :number, :expiration_date)
-    end
-
-    def authenticate_user_with(username, password)
-      user = User.find_by_name(username)
-      raise FailedLoginException, ERROR_MESSAGE_FOR_INVALID_CREDENTIALS unless valid_credentials(user, password)
-      user
-    end
-
-    def valid_credentials(user, password)
-      !user.nil? && user.authenticate(password)
     end
 end
