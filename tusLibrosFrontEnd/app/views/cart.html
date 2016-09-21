@@ -1,0 +1,21 @@
+<div class="container" ng-controller="CartContentCtrl">
+    <div class="row">
+        <h2 style="text-align: center"><b>Libros dentro de tu carrito</b></h2>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Cantidad</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in content">
+                <td>{{item.isbn}}</td>
+                <td>{{item.quantity}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>

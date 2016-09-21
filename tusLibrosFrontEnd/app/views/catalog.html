@@ -1,0 +1,24 @@
+<div class="container" ng-controller="CatalogCtrl">
+    <div class="row">
+        <h2 style="text-align: center"><b>Libros de nuestra editorial</b></h2>
+    </div>
+
+    <div class="row">
+        <table class="table table-hover" ng-controller="CartController">
+            <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>ISBN</th>
+                <th>Precio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="clickeable" ng-repeat="book in catalog" ng-click="addToCart(book.isbn)">
+                <td>{{book.title}}</td>
+                <td>{{book.isbn}}</td>
+                <td>${{book.price}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

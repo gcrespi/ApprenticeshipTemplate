@@ -1,8 +1,8 @@
 <div class="row" ng-controller="LoginController">
     <div class="col-md-6 col-md-offset-3">
-        <form class="simple-form">
-            <input type="text" class="form-group form-control" placeholder="Username" ng-model="user.name" />
-            <input type="password" class="form-group form-control" placeholder="Password" ng-model="user.password"/>
+        <form name='loginForm' class="simple-form">
+            <input type="text" required class="form-group form-control" placeholder="Username" ng-model="user.name" />
+            <input type="password" required class="form-group form-control" placeholder="Password" ng-model="user.password"/>
             <button type="submit" class="form-group form-control btn btn-primary" ng-click="login(user)">Login</button>
         </form>
     </div>
