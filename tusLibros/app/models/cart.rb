@@ -27,7 +27,7 @@ class Cart < ActiveRecord::Base
   end
 
   def list_cart
-    books.group_by{ | a_book | a_book }.map{ | a_book, book_list | [a_book.isbn, book_list.size] }.to_h
+    books.group_by{ | a_book | a_book }.map{ | a_book, book_list | { isbn:a_book.isbn, quantity:book_list.size } }
   end
 
   def content
