@@ -40,11 +40,6 @@ class CartSession < ActiveRecord::Base
     cart.occurrences_of(a_book)
   end
 
-  def list_cart
-    assert_active_session
-    cart.list_cart
-  end
-
   def content
     assert_active_session
     cart.content
@@ -61,6 +56,11 @@ class CartSession < ActiveRecord::Base
 
   def self.error_message_for_expired_cart
     'The cart has already expired'
+  end
+
+  def get_cart
+    assert_active_session
+    cart
   end
 
   def active?

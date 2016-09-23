@@ -41,7 +41,8 @@ describe Cashier do
 
       it 'should appear the sale on the sale book' do
         sale = Sale.last
-        expect(sale.list_items).to eq({ a_book => 1, another_book => 2 })
+        expect(sale.occurrences_of(a_book)).to eq 1
+        expect(sale.occurrences_of(another_book)).to eq 2
         expect(sale.total_price).to eq total_price_of_books
       end
 
@@ -51,7 +52,8 @@ describe Cashier do
 
       it 'the sale should be the last of this client' do
         sale = a_user.sales.last
-        expect(sale.list_items).to eq({ a_book => 1, another_book => 2 })
+        expect(sale.occurrences_of(a_book)).to eq 1
+        expect(sale.occurrences_of(another_book)).to eq 2
         expect(sale.total_price).to eq total_price_of_books
       end
 

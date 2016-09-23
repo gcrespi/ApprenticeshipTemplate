@@ -33,9 +33,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 gem 'bcrypt'
-
+gem 'active_model_serializers', '~> 0.10.0'
 gem 'timecop'
-
 gem 'rack-cors', :require => 'rack/cors'
 
 group :development, :test do

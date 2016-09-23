@@ -22,6 +22,17 @@ RSpec.describe BooksController, type: :controller do
       it 'should have a success response' do
         assert_response :success
       end
+
+      it 'should have a success response' do
+        book_serialized = {
+            'id' => a_book.id,
+            'isbn' => a_book.isbn,
+            'title' => a_book.title,
+            'price' => a_book.price
+        }
+        expect(JSON.parse(response.body)).to eq(book_serialized)
+      end
+
     end
 
     context 'and request to show the a non existent book' do

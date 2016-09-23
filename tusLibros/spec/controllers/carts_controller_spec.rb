@@ -64,7 +64,16 @@ RSpec.describe CartsController, type: :controller do
       end
 
       it 'the response should indicate the quantity of each book' do
-        expect(JSON.parse(response.body)).to eq a_cart.list_cart.as_json
+        serialized_item = {
+            book: ActiveModelSerializers::SerializableResource.new(a_book, {}).serializable_hash,
+            quantity: 3
+        }
+        another_serialized_item = {
+            book: ActiveModelSerializers::SerializableResource.new(another_book, {}).serializable_hash,
+            quantity: 2
+        }
+        serialized_content = [serialized_item, another_serialized_item]
+        expect(response.body).to eq ({id: a_cart.cart_id, content: serialized_content}).to_json
       end
     end
   end

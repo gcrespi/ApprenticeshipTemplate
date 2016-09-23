@@ -26,10 +26,6 @@ class Cart < ActiveRecord::Base
     books.select{ | book | book == a_book }.count
   end
 
-  def list_cart
-    books.group_by{ | a_book | a_book }.map{ | a_book, book_list | { isbn:a_book.isbn, quantity:book_list.size } }
-  end
-
   def content
     books
   end
