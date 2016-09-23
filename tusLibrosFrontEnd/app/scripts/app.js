@@ -46,7 +46,7 @@ angular
             })
             .when('/cart', {
                 templateUrl: 'views/cart.html',
-                controller: 'CartContentCtrl',
+                controller: 'CartController',
                 controllerAs: 'cartContent'
             })
             .otherwise({

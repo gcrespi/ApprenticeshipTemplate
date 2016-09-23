@@ -8,22 +8,27 @@
  * Service in the tusLibrosApp.
  */
 angular.module('tusLibrosApp')
-    .service('CartService', function ($http) {
-        this.cart_id = null;
+    .service('CartService', ['$http', '$resource', function ($http, $resource) {
+        var cart = null;
+        var Cart = $resource('http://localhost:3000/carts/:id/', {id:'@id'},
+            {'addBooks': {method:'POST', url: 'http://localhost:3000/carts/:id/addBooks'}});
+
+        this.cartCreate = function cartCreate(user) {
+            cart = new Cart();
+            return cart.$save({username: user.name, password: user.password});
+        };
 
         this.requestAddToCart = function requestAddToCart(book_isbn, quantity) {
-            return $http.post('http://localhost:3000/carts/' + this.cart_id + '/add_book', {
-                isbn: book_isbn,
-                quantity: quantity
-            }).then(function (response) {
-                return response.data;
+            return cart.$addBooks({isbn: book_isbn, quantity: quantity});
+        };
+
+        this.getCart = function getCart() {
+            return cart.$get().then(function (aCart) {
+                cart = aCart;
             });
         };
 
-        this.getContent = function getContent() {
-            return $http.get('http://localhost:3000/carts/' + this.cart_id + '/list')
-                .then(function onSuccess(response) {
-                    return response.data;
-                });
+        this.content = function() {
+        return cart.content;
         }
-    });
+    }]);

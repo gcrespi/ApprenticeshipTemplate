@@ -8,13 +8,13 @@
  * Controller of the tusLibrosApp
  */
 angular.module('tusLibrosApp')
-    .controller('LoginController', ['$rootScope', '$scope', '$location', 'UserService',
-    function ($rootScope, $scope, $location, UserService) {
+    .controller('LoginController', ['$scope', '$location', 'CartService',
+    function ($scope, $location, CartService) {
         $scope.user = {name: '', password: ''};
 
         $scope.login = function login(user) {
             if ($scope.loginForm.$valid) {
-                UserService.request_login(user).then(function onSuccess() {
+                CartService.cartCreate(user).then(function () {
                     $location.path('/main/');
                 }, function onFailure(response) {
                     alert(response.data.error)
