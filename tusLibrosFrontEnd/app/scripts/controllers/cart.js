@@ -9,9 +9,8 @@
  */
 angular.module('tusLibrosApp')
     .controller('CartController', ['$scope', 'CartService', function ($scope, CartService) {
-        CartService.getCart();
+        CartService.refresh();
         $scope.content = CartService.content();
-        console.log($scope.content);
 
         $scope.addToCart = function addToCart(book_isbn) {
             CartService.requestAddToCart(book_isbn, 1).then(function onSuccess(){

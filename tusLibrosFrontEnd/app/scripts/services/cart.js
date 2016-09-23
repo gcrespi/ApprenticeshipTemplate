@@ -10,8 +10,8 @@
 angular.module('tusLibrosApp')
     .service('CartService', ['$http', '$resource', function ($http, $resource) {
         var cart = null;
-        var Cart = $resource('http://localhost:3000/carts/:id/', {id:'@id'},
-            {'addBooks': {method:'POST', url: 'http://localhost:3000/carts/:id/addBooks'}});
+        var Cart = $resource(backendUrl + '/carts/:id/', {id:'@id'},
+            {'addBooks': {method:'POST', url: backendUrl + '/carts/:id/addBooks'}});
 
         this.cartCreate = function cartCreate(user) {
             cart = new Cart();
@@ -22,7 +22,7 @@ angular.module('tusLibrosApp')
             return cart.$addBooks({isbn: book_isbn, quantity: quantity});
         };
 
-        this.getCart = function getCart() {
+        this.refresh = function refresh() {
             return cart.$get().then(function (aCart) {
                 cart = aCart;
             });
