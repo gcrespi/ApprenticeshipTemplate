@@ -1,10 +1,24 @@
 <div class="row" ng-controller="CheckoutCtrl">
     <div class="col-md-6 col-md-offset-3">
         <form name='checkoutForm' class="simple-form">
-            <input type="text" required class="form-group form-control" placeholder="Nombre como aparece en la tarjeta" ng-model="card.owner" />
-            <input type="text" required class="form-group form-control" placeholder="Número de tarjeta" ng-model="card.number" />
-            <input type="number" required class="form-group form-control" placeholder="Mes" ng-model="card.expiration_date.month" />
-            <input type="number" required class="form-group form-control" placeholder="Año" ng-model="card.expiration_date.year" />
+            <input type="text" class="form-group form-control" placeholder="Nombre como aparece en la tarjeta" ng-model="card.owner"
+                   required ng-maxlength="29"/>
+            <input type="text" class="form-group form-control" placeholder="Número de tarjeta" ng-model="card.number"
+                   required ng-pattern="/^[0-9]{16}/"/>
+
+
+            <div class="form-group">
+                Expiración de la tarjeta:
+                <select name="expirationMonth" ng-model="card.expiration_date.month"
+                        ng-options="month as month for month in months" required>
+                    <option value="">Mes</option>
+                </select>
+                /
+                <select name="expirationYear" ng-model="card.expiration_date.year"
+                        ng-options="year as year for year in years" required>
+                    <option value="">Año</option>
+                </select>
+            </div>
             <button type="submit" class="form-group form-control btn btn-primary" ng-click="checkout(card)">Login</button>
         </form>
     </div>

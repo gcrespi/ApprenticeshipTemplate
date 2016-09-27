@@ -8,7 +8,7 @@
  * Controller of the tusLibrosApp
  */
 angular.module('tusLibrosApp')
-    .controller('CheckoutCtrl', ['$scope', '$location', 'CartService', function ($scope, $location, CartService) {
+    .controller('CheckoutCtrl', ['_', '$scope', '$location', 'CartService', function (_, $scope, $location, CartService) {
         $scope.card = {
             owner: '',
             number: '',
@@ -18,12 +18,19 @@ angular.module('tusLibrosApp')
                 year: null
             }
         };
+        var currentYear = new Date().getFullYear();
+        $scope.months = _.range(1, 13);
+        $scope.years = _.range(currentYear, currentYear + 30);
 
         $scope.checkout = function checkout(aCard) {
-            CartService.checkout(aCard).then(function (){
-                $location.path('/compraExitosa');
-            }).catch(function (){
-                alert('Buhh!');
-            });
+            if ($scope.checkoutForm.$valid) {
+                CartService.checkout(aCard).then(function (){
+                    $location.path('/compraExitosa');
+                }).catch(function (){
+                    alert('Buhh!');
+                });
+            } else {
+                alert('El form no es valido :(');
+            }
         }
     }]);

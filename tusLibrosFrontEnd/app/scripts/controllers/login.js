@@ -20,7 +20,7 @@ angular.module('tusLibrosApp')
                     alert(response.data.error)
                 });
             } else {
-                alert('El form no es valido :(')
+                alert('El form no es valido :(');
             }
         };
     }]);
