@@ -1,0 +1,35 @@
+<div class="container" ng-controller="SaleCtrl">
+    <div class="row">
+        <h2 style="text-align: center"><b>Compras realizadas</b></h2>
+    </div>
+
+    <div class="row" ng-repeat="sale in sales">
+        <div class="row">
+            <h3>Compra nro: {{sale.id}}</h3>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>ISBN</th>
+                    <th>Cantidad</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in sale.content">
+                    <td>{{item.book.title}}</td>
+                    <td>{{item.book.isbn}}</td>
+                    <td>{{item.quantity}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h4>Precio Total: {{sale.total_price}}</h4>
+            <br>
+            <br>
+        </div>
+    </div>
+
+
+</div>
+

@@ -19,7 +19,11 @@ RSpec.describe SalesController, type: :controller do
             book: ActiveModelSerializers::SerializableResource.new(another_book, {}).serializable_hash,
             quantity: 1
         }
-        serialized_sale = {id: a_sale.id, content: [ serialized_item, another_serialized_item ]}
+        serialized_sale = {
+            id: a_sale.id,
+            content: [serialized_item, another_serialized_item],
+            total_price: a_sale.total_price
+        }
         expect(response.body).to eq [serialized_sale].to_json
       end
     end

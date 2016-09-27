@@ -18,15 +18,22 @@ angular.module('tusLibrosApp')
                 year: null
             }
         };
+        $scope.classRulesFor = function classRulesFor(anInput) {
+            return {
+                'has-error': anInput.$touched && anInput.$invalid,
+                'has-success': anInput.$valid
+            };
+        };
+
         var currentYear = new Date().getFullYear();
         $scope.months = _.range(1, 13);
         $scope.years = _.range(currentYear, currentYear + 30);
 
         $scope.checkout = function checkout(aCard) {
             if ($scope.checkoutForm.$valid) {
-                CartService.checkout(aCard).then(function (){
+                CartService.checkout(aCard).then(function () {
                     $location.path('/compraExitosa');
-                }).catch(function (){
+                }).catch(function () {
                     alert('Buhh!');
                 });
             } else {

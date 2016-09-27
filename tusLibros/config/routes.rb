@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   get 'books' => 'books#index'
   get 'books/:id' => 'books#show'
 
-  get 'list_purchases' => 'sales#list_purchases'
+  get 'purchases' => 'sales#list_purchases'
 
   # Example resource route with sub-resources:
   #   resources :products do

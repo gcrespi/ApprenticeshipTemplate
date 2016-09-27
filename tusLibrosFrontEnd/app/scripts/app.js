@@ -45,9 +45,13 @@ angular
             .when('/catalog', {
                 templateUrl: 'views/catalog.html',
                 controller: 'CatalogCtrl',
-                controllerAs: 'catalogService'
+                controllerAs: 'Catalog'
             })
-            .when('/cart', {
+            .when('/purchases', {
+                templateUrl: 'views/sales.html',
+                controller: 'SaleCtrl',
+                controllerAs: 'Sale'
+            }).when('/cart', {
                 templateUrl: 'views/cart.html',
                 controller: 'CartController',
                 controllerAs: 'cartContent',
