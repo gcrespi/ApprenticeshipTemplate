@@ -22,6 +22,8 @@
         </table>
     </div>
     <div class="row" style="text-align: center">
-        <a class="btn btn-primary btn-sm"  href="#/checkout">Checkout</a>
+        <form>
+            <button type="submit" ng-disabled="emptyCart()" ng-click="goToCheckout()" class="btn btn-primary btn-sm">Checkout</button>
+        </form>
     </div>
 </div>

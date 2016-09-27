@@ -43,5 +43,5 @@ angular.module('tusLibrosApp')
 
         this.content = function () {
             return cart.content;
-        }
+        };
     }]);

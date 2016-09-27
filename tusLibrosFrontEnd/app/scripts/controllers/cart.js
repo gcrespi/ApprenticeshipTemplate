@@ -8,6 +8,13 @@
  * Controller of the tusLibrosApp
  */
 angular.module('tusLibrosApp')
-    .controller('CartController', ['$scope', 'CartService', function ($scope, CartService) {
+    .controller('CartController', ['$scope', '$location', 'CartService', function ($scope, $location, CartService) {
         $scope.content = CartService.content();
+        $scope.emptyCart = function () {
+            return $scope.content.length == 0;
+        };
+
+        $scope.goToCheckout = function goToCheckout() {
+            $location.path('/checkout');
+        };
     }]);
