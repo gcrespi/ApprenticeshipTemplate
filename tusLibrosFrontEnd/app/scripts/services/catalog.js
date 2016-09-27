@@ -8,11 +8,11 @@
  * Service in the tusLibrosApp.
  */
 angular.module('tusLibrosApp')
-    .service('catalogService', function ($http, $q) {
+    .service('catalogService', ['$http', 'backendUrl', function ($http, backendUrl) {
         this.getAllBooks = function getAllBooks() {
             return $http.get(backendUrl + '/books')
                 .then(function onSuccess(response) {
                     return response.data;
                 });
         }
-    });
+    }]);

@@ -18,6 +18,14 @@ angular
         'ngTouch'
     ])
     .config(function ($routeProvider) {
+        var requireLogin = {
+            "check": function ($location, CartService) {
+                if (!CartService.hasCart()) {
+                    $location.path('/login');
+                    alert("Debes iniciar sesión para acceder a un carrito");
+                }
+            }
+        };
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
@@ -39,17 +47,19 @@ angular
                 controller: 'CatalogCtrl',
                 controllerAs: 'catalogService'
             })
-            .when('/carts/new', {
-                templateUrl: 'views/new_cart.html',
-                controller: 'CartController',
-                controllerAs: 'login'
-            })
             .when('/cart', {
                 templateUrl: 'views/cart.html',
                 controller: 'CartController',
-                controllerAs: 'cartContent'
-            })
-            .otherwise({
+                controllerAs: 'cartContent',
+                resolve: requireLogin
+            }).when('/checkout', {
+                templateUrl: 'views/checkout.html',
+                controller: 'CheckoutCtrl',
+                controllerAs: 'checkout',
+                resolve: requireLogin
+            }).when('/compraExitosa', {
+                templateUrl: 'views/compraexitosa.html'
+            }).otherwise({
                 redirectTo: '/'
             });
     });

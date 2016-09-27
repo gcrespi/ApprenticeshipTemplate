@@ -20,13 +20,19 @@ class CartsController < ApplicationController
   end
 
   def checkout
-    cart_session = CartSession.find(params.require(:cart_id))
+    cart_session = CartSession.find_by_cart_id!(params.require(:cart_id))
     Cashier.new(MerchantProcessor.new).checkout(cart_session, CreditCard.create!(credit_card_params))
     render nothing: true, status: :ok
   end
 
   private
-    def credit_card_params
-      params.require(:credit_card).permit(:owner, :number, :expiration_date)
-    end
+  def credit_card_params
+    credit_card = params.require(:credit_card)
+    expiration_date = credit_card.require(:expiration_date)
+    {
+        owner: credit_card.require(:owner),
+        number: credit_card.require(:number),
+        expiration_date: Date.new(expiration_date.require(:year), expiration_date.require(:month))
+    }
+  end
 end

@@ -1,3 +1,5 @@
+require 'webmock'
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -41,4 +43,10 @@ Rails.application.configure do
 
   # Configures the url for the service of Merchant Processor for Development
   config.merchant_processor_url = 'https://merchanttest.com/debit'
+
+  WebMock.enable!
+  WebMock.disable_net_connect!(allow_localhost: true)
+
+    WebMock.stub_request(:post, config.merchant_processor_url)
+      .to_return(:status => 200, :body => '0|OK', :headers => {})
 end

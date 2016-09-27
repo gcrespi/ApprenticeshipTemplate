@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
   get 'carts/:cart_id' => 'carts#list'
   post 'carts', to: 'carts#create'
-  post 'carts/:cart_id/addBooks', to:'carts#add_books'
+  post 'carts/:cart_id/addBooks', to: 'carts#add_books'
   post 'carts/:cart_id/checkout', to: 'carts#checkout'
 
   get 'books' => 'books#index'
