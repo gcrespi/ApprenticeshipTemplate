@@ -46,7 +46,6 @@ Rails.application.configure do
 
   WebMock.enable!
   WebMock.disable_net_connect!(allow_localhost: true)
-
-    WebMock.stub_request(:post, config.merchant_processor_url)
-      .to_return(:status => 200, :body => '0|OK', :headers => {})
+  WebMock.stub_request(:post, config.merchant_processor_url)
+    .to_return(:status => 200, :body => '0|OK', :headers => {})
 end

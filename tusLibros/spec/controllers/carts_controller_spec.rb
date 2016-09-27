@@ -22,9 +22,12 @@ RSpec.describe CartsController, type: :controller do
           credit_card: {
               number: a_credit_card.number,
               owner: a_credit_card.owner,
-              expiration_date: a_credit_card.expiration_date
+              expiration_date: {
+                  year: a_credit_card.expiration_date.year,
+                  month: a_credit_card.expiration_date.month
+              }
           }
-        }
+      }
       }
 
       context 'and the cart is not empty' do
@@ -60,7 +63,7 @@ RSpec.describe CartsController, type: :controller do
       before do
         a_cart.add(a_book, 3)
         a_cart.add(another_book, 2)
-        get :list, { cart_id: a_cart.id }
+        get :list, {cart_id: a_cart.id}
       end
 
       it 'the response should indicate the quantity of each book' do
@@ -99,7 +102,7 @@ RSpec.describe CartsController, type: :controller do
       let(:user_credentials) { {
           username: 'not a username',
           password: '123'
-        }
+      }
       }
 
       it 'should success' do
@@ -114,7 +117,7 @@ RSpec.describe CartsController, type: :controller do
       let(:user_credentials) { {
           username: a_user.name,
           password: a_user.password
-        }
+      }
       }
 
       it 'should success' do
@@ -137,7 +140,7 @@ RSpec.describe CartsController, type: :controller do
 
         context 'and requesting to list the cart' do
           before do
-            get :list, { cart_id: a_cart_session.id }
+            get :list, {cart_id: a_cart_session.id}
           end
 
           it 'should respond an unprocessable entity status' do

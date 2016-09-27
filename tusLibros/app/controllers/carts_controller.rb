@@ -32,7 +32,7 @@ class CartsController < ApplicationController
     {
         owner: credit_card.require(:owner),
         number: credit_card.require(:number),
-        expiration_date: Date.new(expiration_date.require(:year), expiration_date.require(:month))
+        expiration_date: Date.new(expiration_date.require(:year).to_i, expiration_date.require(:month).to_i, 1)
     }
   end
 end
