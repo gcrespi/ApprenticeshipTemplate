@@ -17,10 +17,10 @@ angular.module('tusLibrosApp')
                     CartService.cartCreate(user).then(function () {
                         $location.path('/main/');
                     }, function onFailure(response) {
-                        ngToast.create('response.data.error');
+                        ngToast.danger(response.data.error);
                     });
                 } else {
-                    ngToast.create('Revisá los campos, alguno no fué ingresado correctamente');
+                    ngToast.danger('Revisá los campos, \nalguno no fué ingresado correctamente');
                 }
             };
         }]);
