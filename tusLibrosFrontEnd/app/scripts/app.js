@@ -8,6 +8,7 @@
  *
  * Main module of the application.
  */
+
 angular
     .module('tusLibrosApp', [
         'ngAnimate',
@@ -15,7 +16,8 @@ angular
         'ngResource',
         'ngRoute',
         'ngSanitize',
-        'ngTouch'
+        'ngTouch',
+        'ngToast'
     ])
     .config(function ($routeProvider) {
         var requireLogin = {
@@ -52,18 +54,24 @@ angular
                 controller: 'SaleCtrl',
                 controllerAs: 'Sale'
             }).when('/cart', {
-                templateUrl: 'views/cart.html',
-                controller: 'CartController',
-                controllerAs: 'cartContent',
-                resolve: requireLogin
-            }).when('/checkout', {
-                templateUrl: 'views/checkout.html',
-                controller: 'CheckoutCtrl',
-                controllerAs: 'checkout',
-                resolve: requireLogin
-            }).when('/compraExitosa', {
-                templateUrl: 'views/compraexitosa.html'
-            }).otherwise({
-                redirectTo: '/'
-            });
+            templateUrl: 'views/cart.html',
+            controller: 'CartController',
+            controllerAs: 'cartContent',
+            resolve: requireLogin
+        }).when('/checkout', {
+            templateUrl: 'views/checkout.html',
+            controller: 'CheckoutCtrl',
+            controllerAs: 'checkout',
+            resolve: requireLogin
+        }).when('/compraExitosa', {
+            templateUrl: 'views/compraexitosa.html'
+        }).otherwise({
+            redirectTo: '/'
+        });
+    }).config(['ngToastProvider', function (ngToastProvider) {
+    ngToastProvider.configure({
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        maxNumber: 3
     });
+}]);
