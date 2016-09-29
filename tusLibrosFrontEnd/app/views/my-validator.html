@@ -1,0 +1,8 @@
+<div ng-class="{'has-error': validated.$touched && validated.$invalid, 'has-success': validated.$valid}">
+    <div ng-transclude></div>
+    <div ng-show="validatedForm.$submitted || validated.$touched">
+        <span ng-repeat="(inspection, message) in myValidations" ng-show="validated.$error[inspection]" class="help-block">
+            {{ message }}
+        </span>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 <div class="row" ng-controller="CheckoutCtrl">
     <div class="col-md-6 col-md-offset-3">
         <form name='checkoutForm' class="simple-form">
-            <div ng-class="classRulesFor(checkoutForm.owner)">
+            <my-validator validated-form="checkoutForm" validated="checkoutForm.owner" my-validations="ownerValidations">
                 <input type="text"
                        name="owner"
                        class="form-group form-control"
@@ -9,16 +9,8 @@
                        ng-model="card.owner"
                        required="" ng-maxlength="29"
                 />
-                <div ng-show="checkoutForm.$submitted || checkoutForm.owner.$touched">
-                    <span ng-show="checkoutForm.owner.$error.required" class="help-block">
-                        Este campo es obligatorio
-                    </span>
-                    <span ng-show="checkoutForm.owner.$error.maxlength" class="help-block">
-                        El nombre del dueño es demasiado largo
-                    </span>
-                </div>
-            </div>
-            <div ng-class="classRulesFor(checkoutForm.number)">
+            </my-validator>
+            <my-validator validated-form="checkoutForm" validated="checkoutForm.number" my-validations="numberValidations">
                 <input type="text"
                        name="number"
                        class="form-group form-control"
@@ -26,15 +18,7 @@
                        ng-model="card.number"
                        required ng-pattern="/^[0-9]{16}$/"
                 />
-                <div ng-show="checkoutForm.$submitted || checkoutForm.number.$touched">
-                    <span ng-show="checkoutForm.number.$error.required" class="help-block">
-                        Este campo es obligatorio
-                    </span>
-                    <span ng-show="checkoutForm.number.$error.pattern" class="help-block">
-                        El número de la tarjeta debe estar compuesto por 16 dígitos
-                    </span>
-                </div>
-            </div>
+            </my-validator>
 
             <div class="form-group">
                 Expiración de la tarjeta:

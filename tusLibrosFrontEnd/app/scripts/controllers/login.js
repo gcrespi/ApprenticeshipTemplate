@@ -10,7 +10,7 @@
 angular.module('tusLibrosApp')
     .controller('LoginController', ['$scope', '$location', 'CartService', 'ngToast',
         function ($scope, $location, CartService, ngToast) {
-            $scope.user = {name: '', password: ''};
+            $scope.user = {name: 'cosme', password: '123'};
 
             $scope.login = function login(user) {
                 if ($scope.loginForm.$valid) {
