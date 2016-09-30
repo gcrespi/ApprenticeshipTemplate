@@ -8,20 +8,20 @@
  * Controller of the tusLibrosApp
  */
 angular.module('tusLibrosApp')
-    .controller('CatalogCtrl', ['$location', '$scope', 'catalogService', 'CartService',
-        function ($location, $scope, catalogService, CartService) {
-            catalogService.getAllBooks().then(function (books) {
+    .controller('CatalogCtrl', ['$location', '$scope', 'Book', 'CartService', 'ngToast',
+        function ($location, $scope, Book, CartService, ngToast) {
+            Book.query().$promise.then(function (books) {
                 $scope.catalog = books;
-            }).catch(function (response) {
-                alert(response.data.error);
+            }).catch(function () {
+                ngToast.danger('Buhh!');
             });
 
             $scope.addToCart = function addToCart(bookIsbn) {
                 if (CartService.hasCart()) {
                     CartService.requestAddToCart(bookIsbn, 1).then(function () {
-                        alert('Exito!');
+                        ngToast.create('Se ha agregado un libro con éxito!');
                     }).catch(function () {
-                        alert('Buhh!');
+                        ngToast.danger('Buhh!');
                     });
                 } else {
                     $location.path('/login');
