@@ -20,7 +20,7 @@ angular.module('tusLibrosApp')
                         ngToast.danger(response.data.error);
                     });
                 } else {
-                    ngToast.danger('Revisá los campos, \nalguno no fué ingresado correctamente');
+                    ngToast.danger('Revisá los campos, alguno no fué ingresado correctamente');
                 }
             };
         }]);

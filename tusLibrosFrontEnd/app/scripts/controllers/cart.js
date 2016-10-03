@@ -13,8 +13,4 @@ angular.module('tusLibrosApp')
         $scope.emptyCart = function () {
             return $scope.content.length == 0;
         };
-
-        $scope.goToCheckout = function goToCheckout() {
-            $location.path('/checkout');
-        };
     }]);

@@ -11,7 +11,6 @@ angular.module('tusLibrosApp')
     .controller('SaleCtrl', ['$location', '$scope', 'SaleService', function ($location, $scope, SaleService) {
         SaleService.getAllSales().then(function (sales) {
             $scope.sales = sales;
-            console.log(sales);
         }).catch(function (response) {
             alert(response.data.error);
         });

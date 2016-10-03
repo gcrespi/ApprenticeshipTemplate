@@ -17,6 +17,7 @@
     <!-- endbuild -->
 </head>
 <body ng-app="tusLibrosApp">
+<toast></toast>
 <!--[if lte IE 8]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
@@ -43,8 +44,8 @@
 
                 <ul class="nav navbar-nav">
                     <li><a ng-href="#/catalog">Catálogo</a></li>
+                    <li><a ng-href="#/purchases">Tus Compras</a></li>
                     <li><a ng-href="#/about">Sobre Nosotros</a></li>
-                    <li><a ng-href="#/">Contacto</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a ng-href="#/cart"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
@@ -89,8 +90,8 @@
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-touch/angular-touch.js"></script>
-<script src="bower_components/lodash/lodash.js"></script>
 <script src="bower_components/ngToast/dist/ngToast.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -102,14 +103,14 @@
 <script src="scripts/services/cart.js"></script>
 <script src="scripts/controllers/cart.js"></script>
 <script src="scripts/controllers/catalog.js"></script>
-<script src="scripts/services/catalog.js"></script>
 <script src="scripts/services/backendurl.js"></script>
 <script src="scripts/controllers/checkout.js"></script>
 <script src="scripts/services/lodash.js"></script>
 <script src="scripts/controllers/sale.js"></script>
 <script src="scripts/services/sale.js"></script>
-<script src="scripts/services/card.js"></script>
 <script src="scripts/directives/validator.js"></script>
+<script src="scripts/resources/sale.js"></script>
+<script src="scripts/resources/book.js"></script>
 <!-- endbuild -->
 </body>
 </html>

@@ -8,8 +8,8 @@
  * Controller of the tusLibrosApp
  */
 angular.module('tusLibrosApp')
-    .controller('CheckoutCtrl', ['_', '$scope', '$location', 'CartService', 'CardService',
-        function (_, $scope, $location, CartService, CardService) {
+    .controller('CheckoutCtrl', ['_', '$scope', '$location', 'CartService', 'ngToast',
+        function (_, $scope, $location, CartService, ngToast) {
             var currentYear = new Date().getFullYear();
 
             $scope.monthValidations = {
@@ -26,7 +26,16 @@ angular.module('tusLibrosApp')
                 'pattern' : 'El número de la tarjeta debe estar compuesto por 16 dígitos'
             };
 
-            $scope.card = CardService.card;
+            $scope.card = {
+                owner: '',
+                number: '',
+                expiration_date: {
+                    day: 1,
+                    month: null,
+                    year: null
+                }
+            };
+
             $scope.months = _.range(1, 13);
             $scope.years = _.range(currentYear, currentYear + 30);
 
@@ -35,10 +44,10 @@ angular.module('tusLibrosApp')
                     CartService.checkout(aCard).then(function () {
                         $location.path('/compraExitosa');
                     }).catch(function () {
-                        alert('Buhh!');
+                        ngToast.danger('Buhh!');
                     });
                 } else {
-                    alert('El form no es valido :(');
+                    ngToast.danger('El form no es valido :(');
                 }
             }
         }]);
