@@ -31,5 +31,8 @@ module TicTacToe
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.autoload_paths += %W(#{config.root}/app/models/board_state)
+    config.autoload_paths += %W(#{config.root}/app/models/winner_rule)
   end
 end
