@@ -23,8 +23,8 @@ RSpec.describe Board, type: :model do
       expect(board).not_to be_finished
     end
 
-    it 'should be player_xs turn' do
-      expect(board.next_player_to_play).to be :player_x
+    it 'player O cannot play because it is player_xs turn' do
+      expect{board.apply_move_for(upper_left_position, :player_o)}.to raise_error InProgressBoard::ERROR_MESSAGE_FOR_ANOTHER_PLAYER_TURN
     end
 
     it 'a player cannot choose a position outside the board' do
@@ -41,7 +41,7 @@ RSpec.describe Board, type: :model do
       end
 
       it 'the player O should be next one to play' do
-        expect(board.next_player_to_play).to be :player_o
+        expect{board.apply_move_for(upper_left_position, :player_x)}.to raise_error InProgressBoard::ERROR_MESSAGE_FOR_ANOTHER_PLAYER_TURN
       end
 
       it 'the player X cannot play again because is not his turn' do

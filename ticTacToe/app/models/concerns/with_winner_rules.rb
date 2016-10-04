@@ -1,7 +1,7 @@
 module WithWinnerRules
 
-  def has_won?(a_player, a_board)
-    winner_rules.any?{ | rule | rule.has_won?(a_player, a_board) }
+  def has_won?(a_player)
+    winner_rules.any?{ | rule | rule.has_won?(a_player, self) }
   end
 
   private

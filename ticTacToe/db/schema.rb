@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004123644) do
+ActiveRecord::Schema.define(version: 20161004150927) do
 
   create_table "board_positions", force: :cascade do |t|
     t.integer  "x_coordinate"
@@ -25,15 +25,16 @@ ActiveRecord::Schema.define(version: 20161004123644) do
     t.string   "winner_player"
     t.string   "type"
     t.integer  "board_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "playing_player"
+    t.string   "waiting_player"
   end
 
   create_table "boards", force: :cascade do |t|
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.boolean  "player_x_turn", default: true
-    t.boolean  "finished",      default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "finished",   default: false
   end
 
   create_table "moves", force: :cascade do |t|

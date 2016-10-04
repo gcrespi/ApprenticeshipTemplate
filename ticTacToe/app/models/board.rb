@@ -10,7 +10,7 @@ class Board < ActiveRecord::Base
   delegate :finished?, :winner, :apply_move_for, to: :board_state
 
   def self.create_in_progress_board!(attrs = {})
-    self.create!(attrs.merge(board_state: InProgressBoard.create!))
+    self.create!(attrs.merge(board_state: InProgressBoard.create!(playing_player: :player_x, waiting_player: :player_o)))
   end
 
   def self.positions_range
@@ -29,18 +29,11 @@ class Board < ActiveRecord::Base
     moves.create!(board_position: a_position, player: a_player)
   end
 
-  def advance_game(a_player)
-    self.player_x_turn = !self.player_x_turn
-    if self.has_won?(a_player, self)
-      self.board_state = WonBoard.create!(winner_player: a_player)
-    else
-      if moves.size == POSITIONS_PER_DIMENSION**DIMENSIONS
-        self.board_state = DrawBoard.create!
-      end
-    end
+  def change_state(new_state)
+    self.board_state = new_state
   end
 
-  def next_player_to_play
-    player_x_turn ? :player_x : :player_o
+  def full
+    moves.size == POSITIONS_PER_DIMENSION**DIMENSIONS
   end
 end
