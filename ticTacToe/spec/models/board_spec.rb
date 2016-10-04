@@ -40,10 +40,6 @@ RSpec.describe Board, type: :model do
         expect(board).not_to be_finished
       end
 
-      it 'the player O should be next one to play' do
-        expect{board.apply_move_for(upper_left_position, :player_x)}.to raise_error InProgressBoard::ERROR_MESSAGE_FOR_ANOTHER_PLAYER_TURN
-      end
-
       it 'the player X cannot play again because is not his turn' do
         expect{ board.apply_move_for(upper_left_position, :player_x) }.to raise_error InProgressBoard::ERROR_MESSAGE_FOR_ANOTHER_PLAYER_TURN
       end
@@ -64,7 +60,6 @@ RSpec.describe Board, type: :model do
         expect(board).not_to be_finished
       end
     end
-
 
     context 'and the player X and O plays until X wins the principal diagonal' do
       before do
@@ -136,6 +131,28 @@ RSpec.describe Board, type: :model do
 
       it 'the player x should be the winner' do
         expect(board.winner).to be :player_x
+      end
+    end
+
+    context 'and the player X and O plays until the board is full but no one has won' do
+      before do
+        board.apply_move_for(upper_left_position, :player_x)
+        board.apply_move_for(center_position, :player_o)
+        board.apply_move_for(lower_right_position, :player_x)
+        board.apply_move_for(upper_middle_position, :player_o)
+        board.apply_move_for(lower_middle_position, :player_x)
+        board.apply_move_for(middle_right_position, :player_o)
+        board.apply_move_for(middle_left_position, :player_x)
+        board.apply_move_for(lower_left_position, :player_o)
+        board.apply_move_for(upper_right_position, :player_x)
+      end
+
+      it 'the game should be finished' do
+        expect(board).to be_finished
+      end
+
+      it 'the player x should be the winner' do
+        expect(board.winner).to be :draw
       end
     end
   end

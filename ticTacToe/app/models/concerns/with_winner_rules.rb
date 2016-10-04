@@ -14,6 +14,6 @@ module WithWinnerRules
     end
 
     def winner_rules
-      [PrincipalDiagonalWinnerRule.new, SecondaryDiagonalRule.new] + column_winner_rules + row_winner_rules
+      [PrincipalDiagonalWinnerRule.new, SecondaryDiagonalWinnerRule.new] + column_winner_rules + row_winner_rules
     end
 end
