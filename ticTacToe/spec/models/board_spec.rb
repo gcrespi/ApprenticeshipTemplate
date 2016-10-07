@@ -28,7 +28,10 @@ RSpec.describe Board, type: :model do
     end
 
     it 'a player cannot choose a position outside the board' do
-      expect{ board.apply_move_for(outside_board_position, :player_x) }.to raise_error InProgressBoard::ERROR_MESSAGE_FOR_POSITION_OUTSIDE_BOARD
+      expect { board.apply_move_for(outside_board_position, :player_x) }.to raise_error do |error|
+        expect(error).to be_a(ActiveRecord::RecordInvalid)
+        expect(error.record.errors[:board_position]).to be_include Move::ERROR_MESSAGE_FOR_POSITION_OUTSIDE_BOARD
+      end
     end
 
     context 'and player X choose the center position' do
@@ -45,7 +48,10 @@ RSpec.describe Board, type: :model do
       end
 
       it 'cannot play an already taken position' do
-        expect{ board.apply_move_for(center_position, :player_o) }.to raise_error InProgressBoard::ERROR_MESSAGE_POSITION_ALREADY_TAKEN
+        expect { board.apply_move_for(center_position, :player_o) }.to raise_error do |error|
+          expect(error).to be_a(ActiveRecord::RecordInvalid)
+          expect(error.record.errors[:board_position]).to be_include Move::ERROR_MESSAGE_POSITION_ALREADY_TAKEN
+        end
       end
     end
 

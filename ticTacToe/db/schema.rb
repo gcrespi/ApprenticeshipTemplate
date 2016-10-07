@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004150927) do
+ActiveRecord::Schema.define(version: 20161006162518) do
 
   create_table "board_positions", force: :cascade do |t|
     t.integer  "x_coordinate"
@@ -32,9 +32,8 @@ ActiveRecord::Schema.define(version: 20161004150927) do
   end
 
   create_table "boards", force: :cascade do |t|
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.boolean  "finished",   default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "moves", force: :cascade do |t|
